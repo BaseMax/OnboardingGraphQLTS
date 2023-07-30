@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterInput } from './input';
+import { LoginInput, RegisterInput } from './input';
 import { UserService } from '../user';
-import { BcryptService } from '@infrastructure';
+import { BcryptService, EmailService } from '@infrastructure';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -11,11 +11,12 @@ export class AuthService {
     // private readonly jwtService: JwtService,
     private readonly bcryptService: BcryptService,
     private jwtService: JwtService,
+    private emailService: EmailService,
   ) {}
   async register(dto: RegisterInput) {
     // check user existence
     const { email, phone } = dto;
-    const user = await this.userService.findOneByEmailAndPhone({
+    const user = await this.userService.findOneByEmailOrPhone({
       email,
       phone,
     });
@@ -29,8 +30,29 @@ export class AuthService {
     // create/register user
     await this.userService.create(dto);
 
+    // send email
+    await this.emailService.sendEmail(dto.email);
+
     // generate tokens
     const token = await this.jwtService.signAsync({ email: dto.email });
+    return { token };
+  }
+
+  async login(dto: LoginInput) {
+    const { email, password } = dto;
+    // check existence
+    const user = await this.userService.findByEmail(email);
+    if (!user) throw new Error('credentials are invalid');
+
+    // check password
+    const isPasswordCorrect = await this.bcryptService.compare({
+      raw: password,
+      hash: user.password,
+    });
+    if (!isPasswordCorrect) throw new Error('credentials are invalid');
+
+    // generate tokens
+    const token = await this.jwtService.signAsync({ email: user.email });
     return { token };
   }
 }

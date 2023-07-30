@@ -26,11 +26,12 @@ type AuthToken {
 }
 
 type Query {
-  user(id: Int!): User!
+  user(skip: Int! = 0, take: Int! = 10, email: String, phone: String): User
 }
 
 type Mutation {
   register(registerInput: RegisterInput!): AuthToken!
+  login(loginInput: LoginInput!): AuthToken!
 }
 
 input RegisterInput {
@@ -43,4 +44,9 @@ input RegisterInput {
   country: String!
   address_detail: String!
   language: [String!]!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }

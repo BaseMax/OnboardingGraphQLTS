@@ -24,7 +24,7 @@ export class RegisterInput {
 
   @Field(() => String)
   @IsEmail()
-  @MaxLength(30)
+  @MaxLength(60)
   @IsString()
   @IsNotEmpty()
   email: string;

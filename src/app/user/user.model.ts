@@ -2,36 +2,36 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class User {
-  @Field((type) => Int)
+  @Field((_type) => Int)
   id: number;
 
-  @Field((type) => String, { name: 'f_name' })
-  firstName: string;
+  @Field((_type) => String)
+  f_name: string;
 
-  @Field((type) => String, { name: 'l_name' })
-  lastName: string;
+  @Field((_type) => String)
+  l_name: string;
 
-  @Field((type) => String)
+  @Field((_type) => String)
   email: string;
 
-  @Field((type) => String)
+  @Field((_type) => String)
   phone: string;
 
-  @Field((type) => String, { name: 'post_code' })
-  postCode: string;
+  @Field((_type) => String)
+  post_code: string;
 
-  @Field((type) => String)
+  @Field((_type) => String)
   country: string;
 
-  @Field((type) => String, { name: 'address_detail' })
-  addressDetail: string;
+  @Field((_type) => String)
+  address_detail: string;
 
-  @Field((type) => [String])
+  @Field((_type) => [String])
   languages: string[];
 
-  @Field((type) => Date)
+  @Field((_type) => Date)
   createdAt: Date;
 
-  @Field((type) => Date)
+  @Field((_type) => Date)
   updatedAt: Date;
 }
