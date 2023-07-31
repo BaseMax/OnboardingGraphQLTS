@@ -7,10 +7,9 @@ import { BcryptService, EmailService, JwtService } from '@infrastructure';
 export class AuthService {
   constructor(
     private readonly userService: UserService,
-    // private readonly jwtService: JwtService,
     private readonly bcryptService: BcryptService,
-    private jwtService: JwtService,
-    private emailService: EmailService,
+    private readonly jwtService: JwtService,
+    private readonly emailService: EmailService,
   ) {}
   async register(dto: RegisterInput) {
     // check user existence

@@ -1,21 +1,17 @@
-import { EnvironmentConfigService } from '@infrastructure';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { IJwtPayload } from '@domain';
-import { UserService } from 'src/app/user/user.service';
+import { UserService } from '../../user';
 import { User } from '@prisma/client';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private readonly configureService: EnvironmentConfigService,
-    private readonly userService: UserService,
-  ) {
+  constructor(private readonly userService: UserService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configureService.getJwtSecret(),
+      secretOrKey: process.env.JWT_SECRET,
       usernameField: 'email',
     });
   }

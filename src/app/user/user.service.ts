@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/infrastructure/database/prisma.service';
+import { PrismaService } from '@infrastructure';
 import { RegisterInput } from '../auth/input';
 
 interface IFindUserPaginate {

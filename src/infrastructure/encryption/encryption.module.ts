@@ -12,13 +12,14 @@ import { JwtModule } from '@nestjs/jwt';
     EnvironmentConfigModule,
     JwtModule.registerAsync({
       useFactory: async (configService: EnvironmentConfigService) => ({
-        secret: configService.getJwtSecret(),
+        global: true,
+        secretOrPrivateKey: configService.getJwtSecret(),
         signOptions: {
           expiresIn: configService.getJwtExpirationTime(),
         },
       }),
+      imports: [EnvironmentConfigModule],
       inject: [EnvironmentConfigService],
-      global: true,
     }),
   ],
   providers: [BcryptService, JwtService],
