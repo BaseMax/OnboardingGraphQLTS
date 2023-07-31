@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { User } from '@prisma/client';
-import { RegisterInput } from 'src/app/auth/input';
+import { LoginInput, RegisterInput } from 'src/app/auth/input';
 
 export const stubUser: User = {
   id: faker.number.int(),
@@ -29,4 +29,9 @@ export const stubRegisterInput: RegisterInput = {
   password: faker.string.hexadecimal({ length: 8 }),
   phone: faker.phone.number(),
   post_code: faker.location.zipCode(),
+};
+
+export const stubLoginInput: LoginInput = {
+  email: faker.internet.email(),
+  password: faker.internet.password(),
 };

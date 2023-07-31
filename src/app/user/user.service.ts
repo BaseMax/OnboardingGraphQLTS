@@ -27,6 +27,8 @@ export class UserService {
   }
 
   create(dto: RegisterInput) {
+    console.log('USER CREATED');
+
     return this.prisma.user.create({ data: dto });
   }
 

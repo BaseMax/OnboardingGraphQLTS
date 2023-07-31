@@ -8,22 +8,22 @@ import {
 } from '@infrastructure';
 import { UserModule } from '../user';
 import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from './passport';
 import { AuthController } from './auth.controller';
 import { ConfigModule } from '@nestjs/config';
+import { JwtGuard } from './passport';
 
 @Global()
 @Module({
   imports: [
     EnvironmentConfigModule,
-    PassportModule.register({ property: 'email', defaultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     EncryptionModule,
     EmailModule,
     ConfigModule,
     UserModule,
   ],
-  providers: [AuthService, AuthResolver, JwtStrategy],
-  exports: [AuthService],
+  providers: [AuthService, AuthResolver, JwtGuard],
+  exports: [AuthService, EncryptionModule, JwtGuard],
   controllers: [AuthController],
 })
 export class AuthModule {}

@@ -22,6 +22,7 @@ import { join } from 'path';
             : {
                 message:
                   "Your query doesn't match the schema. Try double-checking it!",
+                locations: error.locations,
               };
         }
         return error;
