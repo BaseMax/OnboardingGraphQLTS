@@ -24,6 +24,17 @@ class EnvironmentVariables implements IJwtEnv, IDatabaseEnv {
   // Database
   @IsString()
   DATABASE_URL: string;
+
+  // APP
+  @IsString()
+  APP_DOMAIN: string;
+
+  // EMAIL
+  @IsString()
+  EMAIL_SECRET: string;
+
+  @IsString()
+  EMAIL_EXPIRATION_TIME: string;
 }
 
 export function validate(config: Record<string, unknown>) {

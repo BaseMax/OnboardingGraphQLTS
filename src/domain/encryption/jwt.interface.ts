@@ -5,11 +5,11 @@ export interface IJwtPayload extends JwtPayload {
 }
 
 export interface IJwtService {
-  generateAccessToken: (data: IJwtPayload) => string;
-  generateRefreshToken: (data: IJwtPayload) => string;
+  generateAccessToken: (data: IJwtPayload) => Promise<string>;
+  generateRefreshToken: (data: IJwtPayload) => Promise<string>;
   generateAccessAndRefreshToken: (data: IJwtPayload) => {
-    accessToken: string;
-    refreshToken: string;
+    accessToken: Promise<string>;
+    refreshToken: Promise<string>;
   };
   verifyAccessToken: (token: string) => string | JwtPayload;
   verifyRefreshToken: (token: string) => string | JwtPayload;

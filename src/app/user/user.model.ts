@@ -26,6 +26,9 @@ export class User {
   @Field((_type) => String)
   address_detail: string;
 
+  @Field((_type) => Boolean)
+  email_verified: boolean;
+
   @Field((_type) => [String])
   languages: string[];
 

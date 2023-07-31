@@ -1,6 +1,6 @@
 import { IJwtPayload, IJwtService } from '@domain';
 import { Injectable } from '@nestjs/common';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 import { EnvironmentConfigService } from '../environment';
 import { JwtService as JWT } from '@nestjs/jwt';
 
@@ -11,20 +11,21 @@ export class JwtService implements IJwtService {
     private readonly jwt: JWT,
   ) {}
 
-  public generateAccessToken(data: IJwtPayload): string {
+  public generateAccessToken(data: IJwtPayload): Promise<string> {
     const accessTokenSecret = this.configureService.getJwtSecret();
     const accessTokenExpireIn = this.configureService.getJwtExpirationTime();
-
-    return jwt.sign(data, accessTokenSecret, {
+    return this.jwt.signAsync(data, {
+      secret: accessTokenSecret,
       expiresIn: accessTokenExpireIn,
     });
   }
 
-  public generateRefreshToken(data: IJwtPayload): string {
+  public generateRefreshToken(data: IJwtPayload): Promise<string> {
     const refreshTokenSecret = this.configureService.getJwtRefreshSecret();
     const refreshTokenExpireIn =
       this.configureService.getJwtRefreshExpirationTime();
-    return jwt.sign(data, refreshTokenSecret, {
+    return this.jwt.signAsync(data, {
+      secret: refreshTokenSecret,
       expiresIn: refreshTokenExpireIn,
     });
   }
@@ -37,11 +38,26 @@ export class JwtService implements IJwtService {
 
   public verifyAccessToken(token: string): string | JwtPayload {
     const accessTokenSecret = this.configureService.getJwtSecret();
-    return jwt.verify(token, accessTokenSecret);
+    return this.jwt.verifyAsync(token, { secret: accessTokenSecret });
   }
 
   public verifyRefreshToken(token: string): string | JwtPayload {
     const refreshTokenSecret = this.configureService.getJwtRefreshSecret();
-    return jwt.verify(token, refreshTokenSecret);
+    return this.jwt.verifyAsync(token, { secret: refreshTokenSecret });
+  }
+
+  public generateEmailToken(data: IJwtPayload) {
+    const emailSecret = this.configureService.getEmailSecret();
+    const emailTokenExpireIn = this.configureService.getEmailExpirationTime();
+
+    return this.jwt.signAsync(data, {
+      secret: emailSecret,
+      expiresIn: emailTokenExpireIn,
+    });
+  }
+  public verifyEmailToken(token) {
+    const emailSecret = this.configureService.getEmailSecret();
+
+    return this.jwt.verifyAsync(token, { secret: emailSecret });
   }
 }

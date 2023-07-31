@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LoginInput, RegisterInput } from './input';
 import { UserService } from '../user';
-import { BcryptService, EmailService } from '@infrastructure';
-import { JwtService } from '@nestjs/jwt';
+import { BcryptService, EmailService, JwtService } from '@infrastructure';
 
 @Injectable()
 export class AuthService {
@@ -30,11 +29,10 @@ export class AuthService {
     // create/register user
     await this.userService.create(dto);
 
-    // send email
-    await this.emailService.sendEmail(dto.email);
+    await this.sendEmailVerifyToken(email);
 
     // generate tokens
-    const token = await this.jwtService.signAsync({ email: dto.email });
+    const token = await this.jwtService.generateAccessToken({ email });
     return { token };
   }
 
@@ -52,7 +50,33 @@ export class AuthService {
     if (!isPasswordCorrect) throw new Error('credentials are invalid');
 
     // generate tokens
-    const token = await this.jwtService.signAsync({ email: user.email });
+    const token = await this.jwtService.generateAccessToken({
+      email: user.email,
+    });
     return { token };
+  }
+
+  async verifyToken(token: string) {
+    // verify token (time expiration)
+    const { email } = await this.jwtService.verifyEmailToken(token);
+    return this.userService.verifyUserEmail(email);
+  }
+
+  async resendVerificationEmail(email: string) {
+    const user = await this.userService.findByEmail(email);
+
+    if (user.email_verified) {
+      throw new Error('user already verified');
+    }
+
+    await this.sendEmailVerifyToken(email);
+    return { message: 'email send successfully', email_sent: true };
+  }
+
+  private async sendEmailVerifyToken(email: string) {
+    // generate email token
+    const emailToken = await this.jwtService.generateEmailToken({ email });
+    // send email
+    return this.emailService.sendVerifyEmail(email, emailToken);
   }
 }

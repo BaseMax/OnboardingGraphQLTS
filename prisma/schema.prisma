@@ -16,6 +16,8 @@ model User {
   l_name         String
   email          String   @unique
   phone          String   @unique
+  email_verified Boolean  @default(false)
+  email_token    String?  @unique
   post_code      String
   country        String
   address_detail String

@@ -11,6 +11,7 @@ type User {
   post_code: String!
   country: String!
   address_detail: String!
+  email_verified: Boolean!
   languages: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -25,6 +26,11 @@ type AuthToken {
   token: String!
 }
 
+type EmailMessage {
+  message: String!
+  email_sent: Boolean!
+}
+
 type Query {
   user(skip: Int! = 0, take: Int! = 10, email: String, phone: String): User
 }
@@ -32,6 +38,7 @@ type Query {
 type Mutation {
   register(registerInput: RegisterInput!): AuthToken!
   login(loginInput: LoginInput!): AuthToken!
+  resendVerificationToken(email: String!): EmailMessage!
 }
 
 input RegisterInput {

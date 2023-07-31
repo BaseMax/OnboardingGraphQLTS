@@ -30,4 +30,18 @@ export class EnvironmentConfigService
   getDatabaseURL(): string {
     return this.configService.get<string>('DATABASE_URL');
   }
+
+  // APP_DOMAIN
+  getAppDomain(): string {
+    return this.configService.get<string>('APP_DOMAIN');
+  }
+
+  // EMAIL
+  getEmailSecret(): string {
+    return this.configService.get<string>('EMAIL_SECRET');
+  }
+
+  getEmailExpirationTime(): string {
+    return this.configService.get<string>('EMAIL_EXPIRATION_TIME');
+  }
 }

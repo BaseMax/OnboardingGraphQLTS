@@ -1,7 +1,7 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { LoginInput, RegisterInput } from './input';
 import { AuthService } from './auth.service';
-import { AuthToken } from './output';
+import { AuthToken, EmailMessage } from './output';
 
 @Resolver()
 export class AuthResolver {
@@ -22,5 +22,10 @@ export class AuthResolver {
   @Mutation(() => AuthToken)
   login(@Args('loginInput') loginInput: LoginInput) {
     return this.authService.login(loginInput);
+  }
+
+  @Mutation(() => EmailMessage)
+  resendVerificationToken(@Args('email') email: string) {
+    return this.authService.resendVerificationEmail(email);
   }
 }
