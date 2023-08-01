@@ -2,6 +2,7 @@ import type { IDatabaseEnv, IJwtEnv } from '@domain';
 import { EnvironmentStats } from '@domain';
 import { plainToClass } from 'class-transformer';
 import { IsEnum, IsString, validateSync } from 'class-validator';
+import { GraphQLError } from 'graphql';
 
 class EnvironmentVariables implements IJwtEnv, IDatabaseEnv {
   // env
@@ -46,7 +47,7 @@ export function validate(config: Record<string, unknown>) {
   });
 
   if (errors.length > 0) {
-    throw new Error(errors.toString());
+    throw new GraphQLError(errors.toString());
   }
 
   return validatedConfig;

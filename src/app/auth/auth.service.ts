@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { LoginInput, RegisterInput } from './input';
 import { UserService } from '../user';
 import { BcryptService, EmailService, JwtService } from '@infrastructure';
+import { GraphQLError } from 'graphql';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
       phone,
     });
 
-    if (user) return new Error('user already registered');
+    if (user) return new GraphQLError('user already registered');
 
     // hash password
     const hashPassword = await this.bcryptService.hash(dto.password);
@@ -39,14 +40,14 @@ export class AuthService {
     const { email, password } = dto;
     // check existence
     const user = await this.userService.findByEmail(email);
-    if (!user) throw new Error('credentials are invalid');
+    if (!user) throw new GraphQLError('credentials are invalid');
 
     // check password
     const isPasswordCorrect = await this.bcryptService.compare({
       raw: password,
       hash: user.password,
     });
-    if (!isPasswordCorrect) throw new Error('credentials are invalid');
+    if (!isPasswordCorrect) throw new GraphQLError('credentials are invalid');
 
     // generate tokens
     const token = await this.jwtService.generateAccessToken({
@@ -65,7 +66,7 @@ export class AuthService {
     const user = await this.userService.findByEmail(email);
 
     if (user.email_verified) {
-      throw new Error('user already verified');
+      throw new GraphQLError('user already verified');
     }
 
     await this.sendEmailVerifyToken(email);
