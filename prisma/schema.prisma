@@ -23,6 +23,18 @@ model User {
   address_detail String
   language       String[]
   password       String
+  forms          Form[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}
+
+model Form {
+  id        Int      @id @default(autoincrement())
+  field     String
+  value     String
+  step      Int
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

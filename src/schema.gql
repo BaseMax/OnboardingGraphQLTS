@@ -2,6 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Form {
+  id: Int!
+  step: Int!
+  userId: Int!
+  field: String!
+  value: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User {
   id: Int!
   f_name: String!
@@ -15,12 +30,8 @@ type User {
   languages: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
+  forms(steps: [Int!]!): [Form!]!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type AuthToken {
   token: String!
@@ -33,12 +44,14 @@ type EmailMessage {
 
 type Query {
   user(skip: Int! = 0, take: Int! = 10, email: String, phone: String): User
+  users(skip: Int! = 0, take: Int! = 10, email: String, phone: String): [User!]
 }
 
 type Mutation {
   register(registerInput: RegisterInput!): AuthToken!
   login(loginInput: LoginInput!): AuthToken!
   resendVerificationToken(email: String!): EmailMessage!
+  createFrom(createFormInput: CreateFormInput!): Form!
 }
 
 input RegisterInput {
@@ -56,4 +69,10 @@ input RegisterInput {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input CreateFormInput {
+  field: String!
+  value: String!
+  step: Int!
 }

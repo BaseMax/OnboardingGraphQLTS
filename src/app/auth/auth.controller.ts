@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('verify-token')
+  @Get('verify-email')
   verifyEmail(@Query('token') token: string) {
     return this.authService.verifyToken(token);
   }

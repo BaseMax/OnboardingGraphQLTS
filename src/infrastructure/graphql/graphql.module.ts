@@ -1,6 +1,7 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { GraphQLError } from 'graphql';
 import { join } from 'path';
 
@@ -8,8 +9,9 @@ import { join } from 'path';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      playground: true,
+      playground: false,
       driver: ApolloDriver,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
       formatError: (error: GraphQLError) => {
         const NODE_ENV = process.env.NODE_ENV;
         if (error.extensions.code === 'GRAPHQL_VALIDATION_FAILED') {

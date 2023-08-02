@@ -5,12 +5,16 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
-import { JwtService } from '@infrastructure';
+import { JwtService, PrismaService } from '@infrastructure';
 import { Request } from 'express';
+import { IJwtPayload } from '@domain';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const token = this.extractToken(context);
@@ -18,8 +22,13 @@ export class JwtGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     try {
-      const payload = this.jwtService.verifyAccessToken(token);
-      this.attachPayload(context, payload);
+      const payload = (await this.jwtService.verifyAccessToken(
+        token,
+      )) as IJwtPayload;
+      const user = await this.prisma.user.findUnique({
+        where: { email: payload.email },
+      });
+      this.attachPayload(context, user);
     } catch {
       throw new UnauthorizedException();
     }

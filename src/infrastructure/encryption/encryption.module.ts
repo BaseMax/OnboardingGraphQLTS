@@ -13,7 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule.registerAsync({
       useFactory: async (configService: EnvironmentConfigService) => ({
         global: true,
-        secretOrPrivateKey: configService.getJwtSecret(),
+        secret: configService.getJwtSecret(),
         signOptions: {
           expiresIn: configService.getJwtExpirationTime(),
         },
