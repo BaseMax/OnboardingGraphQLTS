@@ -104,10 +104,16 @@ You can get full Graphql file schema in `/src/schema.gql` file
 
 - user
   Fetch user and his/her forms
+- isPhoneExist
+  return true if user with this phone exists
+- isEmailExist
+  return true if user with this email exists email exists
 
 ```graphql
 type Query {
   user(email: String, phone: String): User
+  isEmailExist(email: String!): Boolean!
+  isPhoneExist(phone: String!): Boolean!
 }
 ```
 
