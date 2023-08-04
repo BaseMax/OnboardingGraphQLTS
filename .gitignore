@@ -1,5 +1,9 @@
+# upload directory
+/uploads
+
 # envrinment variables
 .env
+.env.test
 
 # compiled output
 /dist

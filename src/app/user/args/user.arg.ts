@@ -6,10 +6,9 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { PaginationArgs } from './pagination.arg';
 
 @ArgsType()
-export class UserArg extends PaginationArgs {
+export class UserArg {
   @Field((_type) => String, { nullable: true })
   @IsEmail()
   @MaxLength(60)

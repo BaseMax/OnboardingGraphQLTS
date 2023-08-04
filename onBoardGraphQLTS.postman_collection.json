@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "b22251db-bd8c-4865-b192-83d3e6dd0d48",
+		"name": "onBoardGraphQLTS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23340629"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvaGVpbGtoYWxlZGRhYmRpQGdtYWlsLmNvbSIsImlhdCI6MTY5MDk5NTk4MSwiZXhwIjoxNjkxMDgyMzgxfQ.6aVRmtYmxqOFDjglIud4Z-q2a5ACIKeRMWQUqOEjrqk"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  login(\n    loginInput: { email: \"soheilkhaleddabdi@gmail.com\", password: \"password\" }\n  ) {\n    token\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": "{{graphql_url}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  register(registerInput: {\n    f_name : \" Krystlde\",\n    l_name : \"Mable\",\n    email : \"soheilkhaleddabdi@gmail.com\",\n    phone : \"+9890024652542\",\n    post_code : \"505\",\n    country : \"iran\",\n    address_detail : \"kashan\",\n       language : [\n        \"AB\"\n      ],\n    password : \"password\"\n}){\n    token\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": "{{graphql_url}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Resend Verification Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  resendVerificationToken(email: \"soheilkhaleddabdi@gmail.com\") {\n    message\n    email_sent\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": "{{url}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{email_verifiy_url}}/<TOKEN_FROM_EMAIL_SENT>",
+						"description": "click on URL that sent to your email address"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication section"
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Users (with forms)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvaGVpbGtoYWxlZGRhYmRpQGdtYWlsLmNvbSIsImlhdCI6MTY5MTE1NTM2NCwiZXhwIjoxNjkxMjQxNzY0fQ.NaCM-0-1IZedPdw1wFOWOOUmQGmGBV6edgIFEiHcT7M"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "    {\n        user(email: \"soheilkhaleddabdi@gmail.com\"){ \n            id\n            forms(steps: [1,2]) {\n                id\n            }\n        }\n    }",
+								"variables": ""
+							}
+						},
+						"url": "{{graphql_url}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Create/Update Forms for users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvaGVpbGtoYWxlZGRhYmRpQGdtYWlsLmNvbSIsImlhdCI6MTY5MTE1NTM2NCwiZXhwIjoxNjkxMjQxNzY0fQ.NaCM-0-1IZedPdw1wFOWOOUmQGmGBV6edgIFEiHcT7M"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  createOrUpdateFrom(createFormInput: {\n    field: \"name\",\n    value: \"ali\",\n    step: 1\n  }) {\n    id\n    step\n    value\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": "{{graphql_url}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "File",
+			"item": [
+				{
+					"name": "Upload Files",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "ali",
+									"type": "text"
+								},
+								{
+									"key": "stepId",
+									"value": "15",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": "{{http_url}}/file/upload"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Files",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvaGVpbGtoYWxlZGRhYmRpQGdtYWlsLmNvbSIsImlhdCI6MTY5MTE1NTM2NCwiZXhwIjoxNjkxMjQxNzY0fQ.NaCM-0-1IZedPdw1wFOWOOUmQGmGBV6edgIFEiHcT7M"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "field name",
+									"type": "text"
+								},
+								{
+									"key": "stepId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": "{{http_url}}/file/<ID>"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Files",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvaGVpbGtoYWxlZGRhYmRpQGdtYWlsLmNvbSIsImlhdCI6MTY5MTE1NTM2NCwiZXhwIjoxNjkxMjQxNzY0fQ.NaCM-0-1IZedPdw1wFOWOOUmQGmGBV6edgIFEiHcT7M"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{http_url}}/file/5"
+					},
+					"response": []
+				},
+				{
+					"name": "Get File Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvaGVpbGtoYWxlZGRhYmRpQGdtYWlsLmNvbSIsImlhdCI6MTY5MTE1NTM2NCwiZXhwIjoxNjkxMjQxNzY0fQ.NaCM-0-1IZedPdw1wFOWOOUmQGmGBV6edgIFEiHcT7M"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/file/<ID>"
+					},
+					"response": []
+				},
+				{
+					"name": "get file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvaGVpbGtoYWxlZGRhYmRpQGdtYWlsLmNvbSIsImlhdCI6MTY5MTE1NTM2NCwiZXhwIjoxNjkxMjQxNzY0fQ.NaCM-0-1IZedPdw1wFOWOOUmQGmGBV6edgIFEiHcT7M"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/uploads/<FILE_PATH>"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "graphql_url",
+			"value": "http://localhost:3000/graphql",
+			"type": "string"
+		},
+		{
+			"key": "http_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvaGVpbGtoYWxlZGRhYmRpQGdtYWlsLmNvbSIsImlhdCI6MTY5MDk4MzU1NiwiZXhwIjoxNjkxMDY5OTU2fQ.C4oa8c1cNG_dljZz-BjJgXcHF6VjX62w-fkKsq-7PEI",
+			"type": "string"
+		}
+	]
+}

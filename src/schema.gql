@@ -43,15 +43,15 @@ type EmailMessage {
 }
 
 type Query {
-  user(skip: Int! = 0, take: Int! = 10, email: String, phone: String): User
-  users(skip: Int! = 0, take: Int! = 10, email: String, phone: String): [User!]
+  user(email: String, phone: String): User
+  users(email: String, phone: String): [User!]
 }
 
 type Mutation {
   register(registerInput: RegisterInput!): AuthToken!
   login(loginInput: LoginInput!): AuthToken!
   resendVerificationToken(email: String!): EmailMessage!
-  createFrom(createFormInput: CreateFormInput!): Form!
+  createOrUpdateFrom(createFormInput: CreateFormInput!): Form!
 }
 
 input RegisterInput {

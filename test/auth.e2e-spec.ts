@@ -7,9 +7,8 @@ import {
   stubLoginInput,
   stubRegisterInput,
 } from '../src/infrastructure';
-import { gql } from 'apollo-server-core';
 
-describe('GraphQL (e2e)', () => {
+describe('AUTH GraphQL (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
 

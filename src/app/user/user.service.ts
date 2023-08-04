@@ -14,16 +14,9 @@ interface IFindUserPaginate {
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findOneByEmailOrPhone({
-    email,
-    phone,
-    skip = 0,
-    take = 10,
-  }: IFindUserPaginate) {
+  findOneByEmailOrPhone({ email, phone }: IFindUserPaginate) {
     return this.prisma.user.findFirst({
       where: { OR: [{ email }, { phone }] },
-      skip,
-      take,
     });
   }
 
@@ -53,14 +46,21 @@ export class UserService {
     });
   }
 
-  createForm({
+  async createForm({
     userId,
     createFormInput,
   }: {
     userId: number;
     createFormInput: CreateFormInput;
   }) {
-    console.log({ userId, createFormInput });
+    const { step, field } = createFormInput;
+    const form = await this.prisma.form.findFirst({ where: { step, field } });
+    if (form) {
+      return this.prisma.form.update({
+        where: { id: form.id },
+        data: { ...createFormInput, userId },
+      });
+    }
 
     return this.prisma.form.create({
       data: { ...createFormInput, userId },

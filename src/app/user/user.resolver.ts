@@ -41,12 +41,10 @@ export class UserResolver {
 
   @UseGuards(JwtGuard)
   @Mutation((_returns) => Form)
-  createFrom(
+  createOrUpdateFrom(
     @Args('createFormInput') createFormInput: CreateFormInput,
     @CurrentUser() user: User,
   ) {
-    console.log({ user });
-
     return this.userService.createForm({ userId: user.id, createFormInput });
   }
 }

@@ -1,13 +1,9 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService, PrismaService } from '@infrastructure';
 import { Request } from 'express';
 import { IJwtPayload } from '@domain';
+import { GraphQLError } from 'graphql';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
@@ -19,7 +15,7 @@ export class JwtGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const token = this.extractToken(context);
     if (!token) {
-      throw new UnauthorizedException();
+      throw new GraphQLError('UnAuthorized');
     }
     try {
       const payload = (await this.jwtService.verifyAccessToken(
@@ -30,7 +26,7 @@ export class JwtGuard implements CanActivate {
       });
       this.attachPayload(context, user);
     } catch {
-      throw new UnauthorizedException();
+      throw new GraphQLError('UnAuthorized');
     }
 
     return true;
