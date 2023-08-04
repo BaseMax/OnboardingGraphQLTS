@@ -41,13 +41,13 @@ This project uses the following technologies:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/registration-app.git
+   git clone https://github.com/BaseMax/OnboardingGraphQLTS.git
    ```
 
 2. Navigate into the project directory:
 
    ```bash
-   cd registration-app
+   cd OnboardingGraphQLTS
    ```
 
 3. Install the dependencies:
@@ -221,6 +221,6 @@ input CreateFormInput {
 
 ## Documentation
 
-use `onBoardGraphQLTS.postman_collection.json` file and import it in `postman`
+Feel free to check `onBoardGraphQLTS.postman_collection.json` file and import it into your Postman.
 
 Copyright 2023, Max Base
