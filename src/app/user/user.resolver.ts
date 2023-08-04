@@ -19,6 +19,17 @@ import { CurrentUser } from '@infrastructure';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
+  @Query((_returns) => Boolean)
+  async isEmailExist(@Args('email') email: string) {
+    const user = await this.userService.findOneByEmailOrPhone({ email });
+    return !!user;
+  }
+
+  @Query((_returns) => Boolean)
+  async isPhoneExist(@Args('phone') phone: string) {
+    const user = await this.userService.findOneByEmailOrPhone({ phone });
+    return !!user;
+  }
   @UseGuards(JwtGuard)
   @Query((_returns) => User, { nullable: true })
   async user(@Args() userArgs: UserArg) {
