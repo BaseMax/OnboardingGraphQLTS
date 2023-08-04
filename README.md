@@ -84,6 +84,135 @@ npm test
 
 Jest will execute all the tests and display the results.
 
+## Demo
+
+![register](./screenshots/register.png)
+![invalid register](./screenshots/invalid_register.png)
+![login](./screenshots/login.png)
+![invalid login](./screenshots/invalid_login.png)
+![resend email](./screenshots/resend_email.png)
+![get user](./screenshots/user.png)
+![get form](./screenshots/get_form.png)
+![create form](./screenshots/create_form.png)
+![update form](./screenshots/update_form.png)
+
+## Graphql Schema ,Queries and Mutations
+
+You can get full Graphql file schema in `/src/schema.gql` file
+
+### Queries
+
+- user
+  Fetch user and his/her forms
+
+```graphql
+type Query {
+  user(email: String, phone: String): User
+}
+```
+
+### Mutations
+
+- register
+  register user with correct credentials `RegisterInput`
+- login
+  login to account with correct credentials `LoginInput`
+- resendVerification
+  resend email to unverified user
+- createOrUpdateForm
+  create or update form with `createFormInput` input
+
+```graphql
+type Mutation {
+  register(registerInput: RegisterInput!): AuthToken!
+  login(loginInput: LoginInput!): AuthToken!
+  resendVerificationToken(email: String!): EmailMessage!
+  createOrUpdateFrom(createFormInput: CreateFormInput!): Form!
+}
+```
+
+### Types
+
+- Form
+  user form type for each step of registration
+- User
+  user model with account information
+- AuthToken
+  output type for register/login mutation
+- Email Message
+  output type for resendEmailVerification mutation
+
+```graphql
+type Form {
+  id: Int!
+  step: Int!
+  userId: Int!
+  field: String!
+  value: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type User {
+  id: Int!
+  f_name: String!
+  l_name: String!
+  email: String!
+  phone: String!
+  post_code: String!
+  country: String!
+  address_detail: String!
+  email_verified: Boolean!
+  languages: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  forms(steps: [Int!]!): [Form!]!
+}
+
+type AuthToken {
+  token: String!
+}
+
+type EmailMessage {
+  message: String!
+  email_sent: Boolean!
+}
+```
+
+### Inputs
+
+- RegisterInput
+  register input (register dto) for register mutation
+- LoginInput
+  login input (login dto) for login mutation
+- CreateFormInput
+  create form input (form dto) for each step form
+
+```graphql
+input RegisterInput {
+  f_name: String!
+  l_name: String!
+  email: String!
+  phone: String!
+  password: String!
+  post_code: String!
+  country: String!
+  address_detail: String!
+  language: [String!]!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input CreateFormInput {
+  field: String!
+  value: String!
+  step: Int!
+}
+```
+
 ## Documentation
 
 use `onBoardGraphQLTS.postman_collection.json` file and import it in `postman`
