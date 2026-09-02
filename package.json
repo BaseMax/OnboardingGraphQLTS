@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@apollo/server": "^5.5.0",
-    "@faker-js/faker": "^8.0.2",
+    "@faker-js/faker": "^10.5.0",
     "@nestjs/apollo": "^13.2.3",
     "@nestjs/common": "^11.1.9",
     "@nestjs/config": "^4.0.4",
